@@ -2,8 +2,9 @@ import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
 import { UserServices } from "./user.service";
+import { JwtPayload } from "jsonwebtoken";
 
-interface JwtPayloadId extends TwtPayload {
+interface JwtPayloadId extends JwtPayload {
   id: string;
 }
 
@@ -31,7 +32,7 @@ const loginUser = catchAsync(async (req, res) => {
 });
 
 const updateUserProfile = catchAsync(async (req, res) => {
-    const userId = (res.user as JwtPayloadId).id;
+    const userId = (req.user as JwtPayloadId).id;
     const userData = req.body;
 
     const result = await UserServices.updateUserIntoDB(userId, userData)
