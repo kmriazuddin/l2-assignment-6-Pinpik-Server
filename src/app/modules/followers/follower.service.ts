@@ -49,8 +49,29 @@ const getFollowing = async (userId: string) => {
   }
 };
 
+const unfollowUser = async (userId: string, followingId: string) => {
+  const userFollowers = await Follower.findOne({ userId });
+
+  if (!userFollowers) {
+    throw new appError(httpStatus.BAD_REQUEST, "User not found");
+  }
+
+  if (!userFollowers.following.includes(followingId)) {
+    throw new appError(httpStatus.BAD_REQUEST, "Not following this user");
+  }
+
+  userFollowers.following = userFollowers.following.filter(
+    (id) => id !== followingId
+  );
+
+  await userFollowers.save();
+
+  return userFollowers;
+};
+
 export const FollowerService = {
   followUser,
   getFollower,
   getFollowing,
+  unfollowUser
 };
