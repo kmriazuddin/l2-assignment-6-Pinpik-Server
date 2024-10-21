@@ -19,11 +19,20 @@ router.post(
   UserController.loginUser
 );
 
+router.get("/users", auth(USER_ROLE.admin), UserController.getAllUsers);
+
 router.put(
   "/user/profile",
   auth(USER_ROLE.admin, USER_ROLE.user),
   validateRequest(userValidationSchema.updateUserProfileSchema),
   UserController.updateUserProfile
+);
+
+router.put(
+  "/user/role/:id",
+  auth(USER_ROLE.admin),
+  validateRequest(userValidationSchema.updateUserProfileSchema),
+  UserController.updateUserRole
 );
 
 export const userRoutes = router;

@@ -32,21 +32,47 @@ const loginUser = catchAsync(async (req, res) => {
 });
 
 const updateUserProfile = catchAsync(async (req, res) => {
-    const userId = (req.user as JwtPayloadId).id;
-    const userData = req.body;
+  const userId = (req.user as JwtPayloadId).id;
+  const userData = req.body;
 
-    const result = await UserServices.updateUserIntoDB(userId, userData)
+  const result = await UserServices.updateUserIntoDB(userId, userData);
 
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "User Data Update Successful!",
-        data: result
-    })
-})
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User Data Update Successful!",
+    data: result,
+  });
+});
+
+const getAllUsers = catchAsync(async (req, res) => {
+  const users = await UserServices.getAllUserFromDB();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "All Users Retrieved Successfully!",
+    data: users,
+  });
+});
+
+const updateUserRole = catchAsync(async (req, res) => {
+  const userId = req.params.id;
+  const { role } = req.body;
+
+  const result = await UserServices.updateUserRole(userId, role);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User Role updated!",
+    data: result,
+  });
+});
 
 export const UserController = {
   createUser,
   loginUser,
-  updateUserProfile
+  updateUserProfile,
+  getAllUsers,
+  updateUserRole,
 };

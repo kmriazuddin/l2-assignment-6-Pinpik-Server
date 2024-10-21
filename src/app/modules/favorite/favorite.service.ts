@@ -42,7 +42,14 @@ const getFavoritePostId = async (userId: string) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     throw new appError(400, "Invalid User ID!");
   }
-  const favorite = await Favorite.findOne({ userId }).populate("postId");
+  const favorite = await Favorite.findOne({ userId }).populate({
+    path: "postId",
+    populate: {
+      path: "author",
+      model: "User",
+      select: "name email",
+    },
+  });
 
   if (!favorite) {
     throw new appError(404, "No Data found!");
