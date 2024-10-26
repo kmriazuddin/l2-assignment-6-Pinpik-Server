@@ -11,7 +11,7 @@ app.use("/api", router);
 app.get("/", (req: Request, res: Response) => {
   res
     .status(200)
-    .json({ success: true, message: "Welcome to the Pinpik" });
+    .json({ success: true, message: "Welcome to the Pinpik Server!" });
 });
 
 export default app;
