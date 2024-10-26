@@ -16,7 +16,11 @@ router.post(
 
 router.get("/posts", PostController.getAllPosts);
 
-router.get("/:id", auth(USER_ROLE.user), PostController.getSinglePost);
+router.get(
+  "/:id",
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  PostController.getSinglePost
+);
 
 router.put(
   "/:id",
@@ -25,7 +29,11 @@ router.put(
   PostController.updatePost
 );
 
-router.delete("/:id", auth(USER_ROLE.user), PostController.deletePost);
+router.delete(
+  "/:id",
+  auth(USER_ROLE.admin, USER_ROLE.user),
+  PostController.deletePost
+);
 
 router.post(
   "/:id/vote",
@@ -36,7 +44,6 @@ router.post(
 
 router.get(
   "/user/:userId",
-  auth(USER_ROLE.user),
   auth(USER_ROLE.user),
   PostController.getPostByUserId
 );
