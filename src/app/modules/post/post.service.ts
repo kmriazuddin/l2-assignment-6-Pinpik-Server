@@ -108,6 +108,45 @@ const getPostsByUserIdFromDB = async (userId: string) => {
   return posts;
 };
 
+const getAllPostsWithPagination = async () => {
+  const post = await Post.find().populate("author");
+  return post;
+};
+
+const getAuthorByUpvote = async () => {
+  const result = await Post.aggregate([
+    {
+      $group: {
+        _id: "$author",
+        totalUpvotes: { $sum: "$upvotes" },
+        authorName: { $first: "$author.name" },
+      },
+    },
+    {
+      $sort: { totalUpvotes: -1 },
+    },
+    {
+      $limit: 6,
+    },
+    {
+      $lookup: {
+        from: "user",
+        localField: "_id",
+        foreignField: "_id",
+        as: "authorDetails",
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        totalUpvotes: 1,
+        authorDetails: { $arrayElemAt: ["$authorDetails", 0] },
+      },
+    },
+  ]);
+  return result;
+};
+
 export const PostServices = {
   createPostIntoDB,
   getAllPostsFromDB,
@@ -116,4 +155,6 @@ export const PostServices = {
   deletePostFromDB,
   voteOnPost,
   getPostsByUserIdFromDB,
+  getAllPostsWithPagination,
+  getAuthorByUpvote
 };

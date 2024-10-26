@@ -41,4 +41,16 @@ router.get(
   PostController.getPostByUserId
 );
 
+router.get(
+  "/posts/all",
+  auth(USER_ROLE.admin),
+  PostController.getAllPostsWithPagination
+);
+
+router.get(
+  "/upvotes/top-authors",
+  auth(USER_ROLE.admin),
+  PostController.getAuthorByUpvote
+);
+
 export const postRouter = router;

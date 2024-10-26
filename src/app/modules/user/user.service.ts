@@ -77,10 +77,36 @@ const updateUserRole = async (userId: string, role: string) => {
   return updateUser;
 };
 
+const getPremiumUser = async () => {
+  const result = await User.aggregate([
+    {
+      $group: {
+        _id: "$isPremium",
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        premiumStatus: {
+          $cond: {
+            if: { $eq: ["$_id", true] },
+            then: "Premium Member",
+            else: "Not Premium",
+          },
+          count: 1,
+        },
+      },
+    },
+  ]);
+  return result;
+};
+
 export const UserServices = {
   createUserIntoDB,
   loginUserIntoDB,
   updateUserIntoDB,
   getAllUserFromDB,
   updateUserRole,
+  getPremiumUser,
 };

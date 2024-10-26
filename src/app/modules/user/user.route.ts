@@ -35,4 +35,10 @@ router.put(
   UserController.updateUserRole
 );
 
+router.get(
+  "/users/premium-stats",
+  auth(USER_ROLE.admin),
+  UserController.getPremiumUser
+);
+
 export const userRoutes = router;

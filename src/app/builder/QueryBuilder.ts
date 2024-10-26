@@ -25,7 +25,7 @@ class QueryBuilder<T> {
     if (sortBy === "mostPopular") {
       this.modelQuery = this.modelQuery.sort({ upvotes: -1 });
     } else if (sortBy === "leastPopular") {
-      this.modelQuery = this.modelQuery.sort({ downvotes: -1 });
+      this.modelQuery = this.modelQuery.sort({ upvotes: 1 });
     } else {
       this.modelQuery = this.modelQuery.sort({ upvotes: -1 });
     }

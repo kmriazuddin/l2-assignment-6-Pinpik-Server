@@ -94,6 +94,28 @@ const getPostByUserId = catchAsync(async (req, res) => {
   });
 });
 
+const getAllPostsWithPagination = catchAsync(async (req, res) => {
+  const result = await PostServices.getAllPostsWithPagination();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "All Posts Retrieved Successfully!",
+    data: result,
+  });
+});
+
+const getAuthorByUpvote = catchAsync(async (req, res) => {
+  const result = await PostServices.getAuthorByUpvote();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Author Data Retrieved Successfully!",
+    data: result,
+  });
+});
+
 export const PostController = {
   createPost,
   getAllPosts,
@@ -102,4 +124,6 @@ export const PostController = {
   deletePost,
   votePost,
   getPostByUserId,
+  getAllPostsWithPagination,
+  getAuthorByUpvote,
 };

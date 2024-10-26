@@ -69,10 +69,22 @@ const updateUserRole = catchAsync(async (req, res) => {
   });
 });
 
+const getPremiumUser = catchAsync(async(req,res)=> {
+  const stats = await UserServices.getPremiumUser();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Premium User Retrieved!",
+    data: stats,
+  });
+})
+
 export const UserController = {
   createUser,
   loginUser,
   updateUserProfile,
   getAllUsers,
   updateUserRole,
+  getPremiumUser
 };
